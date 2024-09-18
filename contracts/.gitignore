@@ -1,0 +1,44 @@
+# Virtual environment
+.venv/
+
+
+.env
+# Python cache files
+__pycache__/
+*.pyc
+
+# SQLite database (if you're using SQLite)
+# static/
+
+# Django static files
+
+
+db.sqlite3
+
+# Media files
+media/
+
+# Environment variables
+contracts/.env
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Ignore the VS directory (IDE specific)
+.vs/
+
+# Ignore other potential IDE directories
+*.sublime-project
+*.sublime-workspace
+
+# Ignore compiled translations
+*.mo
+
+# Ignore logs
+*.log
+
+# Ignore local configuration files
+*.local

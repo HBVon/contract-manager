@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Notaire</title>
+    <link rel="stylesheet" href="{% static 'css/tester3.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('name')">Name</a>
+                <a href="#" onclick="filterBy('address')">Address</a>
+                <a href="#" onclick="filterBy('codebar')">Codebar</a>
+                <a href="#" onclick="filterBy('age')">Age</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <div class="content-container">
+                <section class="profile-edit">
+                    <h3>Create Notaire</h3>
+                    <form action="{% url 'create_notaire' %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="nom_prenom_notaire">Nom et Prénom:</label>
+                            <input type="text" id="nom_prenom_notaire" name="nom_prenom_notaire" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commune">Commune:</label>
+                            <select id="commune" name="commune" required>
+                                {% for commune in communes %}
+                                    <option value="{{ commune.id }}">{{ commune.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="banque">Banque:</label>
+                            <select id="banque" name="banque" required>
+                                <option value="AGB">AGB</option>
+                                <option value="Algérie Poste (CCP)">Algérie Poste (CCP)</option>
+                                <option value="ASBA">ASBA</option>
+                                <option value="B. ABC">B. ABC</option>
+                                <option value="B. EL BARAKA">B. EL BARAKA</option>
+                                <option value="BADR">BADR</option>
+                                <option value="BDL">BDL</option>
+                                <option value="BEA">BEA</option>
+                                <option value="BN. HABITAT">BN. HABITAT</option>
+                                <option value="BNA">BNA</option>
+                                <option value="BNP PARIS BAS AL DJAZAIR">BNP PARIS BAS AL DJAZAIR</option>
+                                <option value="CNEP">CNEP</option>
+                                <option value="CPA">CPA</option>
+                                <option value="FRANSABANK EL DJAZAIR">FRANSABANK EL DJAZAIR</option>
+                                <option value="HBTF">HBTF</option>
+                                <option value="HSBC">HSBC</option>
+                                <option value="NATIXIS">NATIXIS</option>
+                                <option value="SOCIETE GENERALE">SOCIETE GENERALE</option>
+                                <option value="TBA">TBA</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adresse">Adresse:</label>
+                            <input type="text" id="adresse" name="adresse" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num_mobile">Numéro Mobile:</label>
+                            <input type="text" id="num_mobile" name="num_mobile" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num_fixe">Numéro Fixe:</label>
+                            <input type="text" id="num_fixe" name="num_fixe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num_fax">Numéro Fax:</label>
+                            <input type="text" id="num_fax" name="num_fax">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="courriel">Courriel:</label>
+                            <input type="email" id="courriel" name="courriel" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num_compte">Numéro de Compte:</label>
+                            <input type="text" id="num_compte" name="num_compte">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="autre">Autre:</label>
+                            <textarea id="autre" name="autre"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="remarque">Remarque:</label>
+                            <textarea id="remarque" name="remarque"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Create Notaire</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+
+        function filterBy(filter) {
+            console.log('Filtering by: ' + filter);
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

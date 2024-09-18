@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Contract</title>
+    <link rel="stylesheet" href="{% static 'css/tester3.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('nom_site')">Site Name</a>
+                <a href="#" onclick="filterBy('code_site')">Site Code</a>
+                <a href="#" onclick="filterBy('adresse')">Address</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <div class="content-container">
+                <section class="profile-edit">
+                    <h3>Create Contract</h3>
+                    <form action="{% url 'create_contrat' %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="code_site">Code Site:</label>
+                            <select id="code_site" name="code_site" required>
+                                {% for site in sites %}
+                                    <option value="{{ site.id }}">{{ site.code_site }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wilaya">Wilaya:</label>
+                            <select id="wilaya" name="wilaya" required>
+                                {% for wilaya in wilayas %}
+                                    <option value="{{ wilaya.id }}">{{ wilaya.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="propriete">Propriété:</label>
+                            <select id="propriete" name="propriete" required>
+                                <option value="AADL">AADL</option>
+                                <option value="ACED">ACED</option>
+                                <option value="ADA">ADA</option>
+                                <option value="ADE">ADE</option>
+                                <option value="Aéroport">Aéroport</option>
+                                <option value="Affaires Religieuses">Affaires Religieuses</option>
+                                <option value="Algérie Poste">Algérie Poste</option>
+                                <option value="Algérie Telecom">Algérie Telecom</option>
+                                <option value="APC">APC</option>
+                                <option value="ATM/ company">ATM/ company</option>
+                                <option value="CABAM">CABAM</option>
+                                <option value="Coloc OTA">Coloc OTA</option>
+                                <option value="Coloc WTA">Coloc WTA</option>
+                                <option value="Conservation des forêts">Conservation des forêts</option>
+                                <option value="COSIDER">COSIDER</option>
+                                <option value="Direction de la culture">Direction de la culture</option>
+                                <option value="DJS">DJS</option>
+                                <option value="Domaine">Domaine</option>
+                                <option value="DOU/ Université">DOU/ Université</option>
+                                <option value="EPSP">EPSP</option>
+                                <option value="Exploitation Agricole">Exploitation Agricole</option>
+                                <option value="GICA">GICA</option>
+                                <option value="MDN">MDN</option>
+                                <option value="Naftal">Naftal</option>
+                                <option value="Privé">Privé</option>
+                                <option value="Privé/ A. Commerciale">Privé/ A. Commerciale</option>
+                                <option value="Protection Civile">Protection Civile</option>
+                                <option value="Rail Telecom">Rail Telecom</option>
+                                <option value="SCIMAT">SCIMAT</option>
+                                <option value="SOGRAL">SOGRAL</option>
+                                <option value="TDA">TDA</option>
+                                <option value="Université">Université</option>
+                                <option value="Wilaya">Wilaya</option>
+                                <option value="Coloc OOREDO">Coloc OOREDO</option>
+                                <option value="Coloc Djezzy">Coloc Djezzy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type_contrat">Type de Contrat:</label>
+                            <select id="type_contrat" name="type_contrat" required>
+                                <option value="Contrat notarié">Contrat notarié</option>
+                                <option value="Convention Cadre">Convention Cadre</option>
+                                <option value="Convention site">Convention site</option>
+                                <option value="Résilié">Résilié</option>
+                                <option value="En litige">En litige</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ref_dernier_contrat">Réf. Dernier Contrat:</label>
+                            <input type="text" id="ref_dernier_contrat" name="ref_dernier_contrat" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bail_location_annuel">Bail Location Annuel:</label>
+                            <input type="number" step="any" id="bail_location_annuel" name="bail_location_annuel" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notaire">Notaire:</label>
+                            <select id="notaire" name="notaire" required>
+                                {% for notaire in notaires %}
+                                    <option value="{{ notaire.id }}">{{ notaire.nom_prenom_notaire }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_signature_dernier_contrat">Date Signature Dernier Contrat:</label>
+                            <input type="date" id="date_signature_dernier_contrat" name="date_signature_dernier_contrat" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duree_bail_dernier_contrat">Durée Bail Dernier Contrat (mois):</label>
+                            <input type="number" id="duree_bail_dernier_contrat" name="duree_bail_dernier_contrat" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_fin_contrat">Date Fin Contrat:</label>
+                            <input type="date" id="date_fin_contrat" name="date_fin_contrat" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duree_restante_avant_expiration">Durée Restante Avant Expiration (jours):</label>
+                            <input type="text" id="duree_restante_avant_expiration" name="duree_restante_avant_expiration" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="etat_contrat_actuel">État Contrat Actuel:</label>
+                            <select id="etat_contrat_actuel" name="etat_contrat_actuel" required>
+                                <option value="Actif">Actif</option>
+                                <option value="Inactif">Inactif</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_dernier_renouvellement">Date Dernier Renouvellement:</label>
+                            <input type="date" id="date_dernier_renouvellement" name="date_dernier_renouvellement" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nombre_renouvellement">Nombre de Renouvellements:</label>
+                            <input type="number" id="nombre_renouvellement" name="nombre_renouvellement" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="etat_renouvellement">État Renouvellement:</label>
+                            <select id="etat_renouvellement" name="etat_renouvellement" required>
+                                <option value="Non">Non</option>
+                                <option value="Oui">Oui</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="historique_gestion_renouvellements">Historique Gestion Renouvellements:</label>
+                            <textarea id="historique_gestion_renouvellements" name="historique_gestion_renouvellements" rows="4" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Contract</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

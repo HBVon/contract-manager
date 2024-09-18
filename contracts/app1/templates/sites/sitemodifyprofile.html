@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Details</title>
+    <link rel="stylesheet" href="{% static 'css/tester4.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'sitess' %}"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('nom_site')">Site Name</a>
+                <a href="#" onclick="filterBy('code_site')">Site Code</a>
+                <a href="#" onclick="filterBy('adresse')">Address</a>
+                <a href="#" onclick="filterBy('commune')">Commune</a>
+                <a href="#" onclick="filterBy('daira')">Daira</a>
+                <a href="#" onclick="filterBy('wilaya')">Wilaya</a>
+                <a href="#" onclick="filterBy('typologie')">Typology</a>
+                <a href="#" onclick="filterBy('propriete')">Property</a>
+                <a href="#" onclick="filterBy('bailleur')">Bailleur</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="content-container">
+                <!-- Header Section -->
+                <header class="content-header">
+                    <h1>Site Information</h1>
+                    <div class="action-buttons">
+                        <a href ="{% url 'site_detail' site.id %}" class="btn-primary">Return</a>
+                        
+                    </div>
+                </header>
+
+                <!-- Site Details Section -->
+                <section class="section profile-section">
+                    <div class="profile-header">
+                        <img src="{% static 'images/profile.png' %}" alt="Site Picture" class="profile-picture">
+                        <div class="profile-details">
+                            <h2>{{ site.nom_site }}</h2>
+                            <p>{{ site.commune.name }}, {{ site.daira.name }}, {{ site.wilaya.name }}</p>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h3>General Information</h3>
+                        <p><strong>Code Site:</strong> {{ site.code_site }}</p>
+                        <p><strong>Nom Site:</strong> {{ site.nom_site }}</p>
+                        <p><strong>Commune:</strong> {{ site.commune.name }}</p>
+                        <p><strong>Daira:</strong> {{ site.daira.name }}</p>
+                        <p><strong>Wilaya:</strong> {{ site.wilaya.name }}</p>
+                        <p><strong>Adresse:</strong> {{ site.adresse }}</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Geographical Information</h3>
+                        <p><strong>Longitude:</strong> {{ site.longitude }}</p>
+                        <p><strong>Latitude:</strong> {{ site.latitude }}</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Property Information</h3>
+                        <p><strong>Typologie:</strong> {{ site.typologie }}</p>
+                        <p><strong>Surface Louée:</strong> {{ site.surface_louee }} m²</p>
+                        <p><strong>Propriété:</strong> {{ site.propriete }}</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Bailleur Information</h3>
+                        <p><strong>Nom:</strong> {{ site.bailleur.nom_bailleur }}</p>
+                        <p><strong>Prénom:</strong> {{ site.bailleur.prenom_bailleur }}</p>
+                        <p><strong>Mobile Number:</strong> {{ site.bailleur.num_mobile }}</p>
+                        <p><strong>Fixed Number:</strong> {{ site.bailleur.num_fixe }}</p>
+                        <p><strong>Fax Number:</strong> {{ site.bailleur.num_fax }}</p>
+                        <p><strong>Email:</strong> {{ site.bailleur.courriel }}</p>
+                        <p><strong>Bank:</strong> {{ site.bailleur.banque }}</p>
+                        <p><strong>Account Number:</strong> {{ site.bailleur.num_compte }}</p>
+                        <p><strong>Other Information:</strong> {{ site.bailleur.autre }}</p>
+                        <p><strong>Remark:</strong> {{ site.bailleur.remarque }}</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Additional Information</h3>
+                        <p><strong>Remarque:</strong> {{ site.remarque }}</p>
+                    </div>
+                </section>
+
+                <!-- Edit Site Form Section -->
+                <section class="profile-edit">
+                    <h3>Edit Site</h3>
+                    <form action="{% url "update_site" site.id %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="code_site">Code Site:</label>
+                            <input type="text" id="code_site" name="code_site" value="{{ site.code_site }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nom_site">Nom Site:</label>
+                            <input type="text" id="nom_site" name="nom_site" value="{{ site.nom_site }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commune">Commune:</label>
+                            <select id="commune" name="commune" required>
+                                {% for commune in communes %}
+                                    <option value="{{ commune.id }}" {% if commune.id == site.commune.id %}selected{% endif %}>{{ commune.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="daira">Daira:</label>
+                            <select id="daira" name="daira" required>
+                                {% for daira in dairas %}
+                                    <option value="{{ daira.id }}" {% if daira.id == site.daira.id %}selected{% endif %}>{{ daira.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wilaya">Wilaya:</label>
+                            <select id="wilaya" name="wilaya" required>
+                                {% for wilaya in wilayas %}
+                                    <option value="{{ wilaya.id }}" {% if wilaya.id == site.wilaya.id %}selected{% endif %}>{{ wilaya.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="longitude">Longitude:</label>
+                            <input type="number" step="any" id="longitude" name="longitude" value="{{ site.longitude }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="latitude">Latitude:</label>
+                            <input type="number" step="any" id="latitude" name="latitude" value="{{ site.latitude }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="typologie">Typologie:</label>
+                            <select id="typologie" name="typologie" required>
+                                <option value="pylone" {% if site.typologie == 'pylone' %}selected{% endif %}>Pylone</option>
+                                <option value="mat" {% if site.typologie == 'mat' %}selected{% endif %}>Mat</option>
+                                <option value="micro-bts" {% if site.typologie == 'micro-bts' %}selected{% endif %}>Micro-BTS</option>
+                                <option value="multi-mats" {% if site.typologie == 'multi-mats' %}selected{% endif %}>Multi-Mats</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="surface_louee">Surface Louée (m²):</label>
+                            <input type="number" step="any" id="surface_louee" name="surface_louee" value="{{ site.surface_louee }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="propriete">Propriété:</label>
+                            <select id="propriete" name="propriete" required>
+                                <option value="AADL">AADL</option>
+                                <option value="ACED">ACED</option>
+                                <option value="ADA">ADA</option>
+                                <option value="ADE">ADE</option>
+                                <option value="Aéroport">Aéroport</option>
+                                <option value="Affaires Religieuses">Affaires Religieuses</option>
+                                <option value="Algérie Poste">Algérie Poste</option>
+                                <option value="Algérie Telecom">Algérie Telecom</option>
+                                <option value="APC">APC</option>
+                                <option value="ATM/ company">ATM/ company</option>
+                                <option value="CABAM">CABAM</option>
+                                <option value="Coloc OTA">Coloc OTA</option>
+                                <option value="Coloc WTA">Coloc WTA</option>
+                                <option value="Conservation des forêts">Conservation des forêts</option>
+                                <option value="COSIDER">COSIDER</option>
+                                <option value="Direction de la culture">Direction de la culture</option>
+                                <option value="DJS">DJS</option>
+                                <option value="Domaine">Domaine</option>
+                                <option value="DOU/ Université">DOU/ Université</option>
+                                <option value="EPSP">EPSP</option>
+                                <option value="Exploitation Agricole">Exploitation Agricole</option>
+                                <option value="GICA">GICA</option>
+                                <option value="MDN">MDN</option>
+                                <option value="Naftal">Naftal</option>
+                                <option value="Privé">Privé</option>
+                                <option value="Privé/ A. Commerciale">Privé/ A. Commerciale</option>
+                                <option value="Protection Civile">Protection Civile</option>
+                                <option value="Rail Telecom">Rail Telecom</option>
+                                <option value="SCIMAT">SCIMAT</option>
+                                <option value="SOGRAL">SOGRAL</option>
+                                <option value="TDA">TDA</option>
+                                <option value="Université">Université</option>
+                                <option value="Wilaya">Wilaya</option>
+                                <option value="Coloc OOREDO">Coloc OOREDO</option>
+                                <option value="Coloc Djezzy">Coloc Djezzy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adresse">Adresse:</label>
+                            <input type="text" id="adresse" name="adresse" value="{{ site.adresse }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bailleur">Bailleur:</label>
+                            <select id="bailleur" name="bailleur" required>
+                                {% for bailleur in bailleurs %}
+                                    <option value="{{ bailleur.id }}" {% if bailleur.id == site.bailleur.id %}selected{% endif %}>{{ bailleur.nom_bailleur }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarque">Remarque:</label>
+                            <textarea id="remarque" name="remarque">{{ site.remarque }}</textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Update Site</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle filter dropdown visibility
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        };
+
+        // Function to handle filter option selection
+        function filterBy(filter) {
+            document.getElementById('filterByInput').value = filter;
+            document.querySelector('.search-bar input[type="text"]').placeholder = 'Search by ' + filter.replace('_', ' ');
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

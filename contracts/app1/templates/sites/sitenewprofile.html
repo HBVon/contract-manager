@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Site</title>
+    <link rel="stylesheet" href="{% static 'css/tester3.css' %}">
+    <script>
+        .container {
+            display: flex;
+            min-height: 100vh; /* Ensure the container takes up at least the full height of the viewport */
+            margin-top: 102px; /* Space for the fixed navbar */
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 273px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            position: sticky; /* Sticky will make it stick to its container */
+            top: 102px; /* Align below the navbar */
+            height: 4000000px; /* Adjust height according to content */
+            flex-shrink: 0; /* Prevent it from shrinking */
+            overflow-y: auto; /* Allow vertical scrolling if content overflows */
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box; /* Include padding in the height */
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1; /* Allow the main content to grow and take remaining space */
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('nom_site')">Site Name</a>
+                <a href="#" onclick="filterBy('code_site')">Site Code</a>
+                <a href="#" onclick="filterBy('adresse')">Address</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="content-container">
+                <section class="profile-edit">
+                    <h3>Create Site</h3>
+                    <form action="{% url 'create_site' %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="code_site">Code Site:</label>
+                            <input type="text" id="code_site" name="code_site" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nom_site">Nom Site:</label>
+                            <input type="text" id="nom_site" name="nom_site" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commune">Commune:</label>
+                            <select id="commune" name="commune" required>
+                                {% for commune in communes %}
+                                    <option value="{{ commune.id }}">{{ commune.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="daira">Daira:</label>
+                            <select id="daira" name="daira" required>
+                                {% for daira in dairas %}
+                                    <option value="{{ daira.id }}">{{ daira.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wilaya">Wilaya:</label>
+                            <select id="wilaya" name="wilaya" required>
+                                {% for wilaya in wilayas %}
+                                    <option value="{{ wilaya.id }}">{{ wilaya.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="longitude">Longitude:</label>
+                            <input type="number" step="any" id="longitude" name="longitude" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="latitude">Latitude:</label>
+                            <input type="number" step="any" id="latitude" name="latitude" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="typologie">Typologie:</label>
+                            <select id="typologie" name="typologie" required>
+                                <option value="pylone">Pylone</option>
+                                <option value="mat">Mat</option>
+                                <option value="micro-bts">Micro-BTS</option>
+                                <option value="multi-mats">Multi-Mats</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="surface_louee">Surface Louée (m²):</label>
+                            <input type="number" step="any" id="surface_louee" name="surface_louee" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="propriete">Propriété:</label>
+                            <select id="propriete" name="propriete" required>
+                                <option value="AADL">AADL</option>
+                                <option value="ACED">ACED</option>
+                                <option value="ADA">ADA</option>
+                                <option value="ADE">ADE</option>
+                                <option value="Aéroport">Aéroport</option>
+                                <option value="Affaires Religieuses">Affaires Religieuses</option>
+                                <option value="Algérie Poste">Algérie Poste</option>
+                                <option value="Algérie Telecom">Algérie Telecom</option>
+                                <option value="APC">APC</option>
+                                <option value="ATM/ company">ATM/ company</option>
+                                <option value="CABAM">CABAM</option>
+                                <option value="Coloc OTA">Coloc OTA</option>
+                                <option value="Coloc WTA">Coloc WTA</option>
+                                <option value="Conservation des forêts">Conservation des forêts</option>
+                                <option value="COSIDER">COSIDER</option>
+                                <option value="Direction de la culture">Direction de la culture</option>
+                                <option value="DJS">DJS</option>
+                                <option value="Domaine">Domaine</option>
+                                <option value="DOU/ Université">DOU/ Université</option>
+                                <option value="EPSP">EPSP</option>
+                                <option value="Exploitation Agricole">Exploitation Agricole</option>
+                                <option value="GICA">GICA</option>
+                                <option value="MDN">MDN</option>
+                                <option value="Naftal">Naftal</option>
+                                <option value="Privé">Privé</option>
+                                <option value="Privé/ A. Commerciale">Privé/ A. Commerciale</option>
+                                <option value="Protection Civile">Protection Civile</option>
+                                <option value="Rail Telecom">Rail Telecom</option>
+                                <option value="SCIMAT">SCIMAT</option>
+                                <option value="SOGRAL">SOGRAL</option>
+                                <option value="TDA">TDA</option>
+                                <option value="Université">Université</option>
+                                <option value="Wilaya">Wilaya</option>
+                                <option value="Coloc OOREDO">Coloc OOREDO</option>
+                                <option value="Coloc Djezzy">Coloc Djezzy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adresse">Adresse:</label>
+                            <input type="text" id="adresse" name="adresse" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bailleur">Bailleur:</label>
+                            <select id="bailleur" name="bailleur" required>
+                                {% for bailleur in bailleurs %}
+                                    <option value="{{ bailleur.id }}">{{ bailleur.nom_bailleur }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarque">Remarque:</label>
+                            <textarea id="remarque" name="remarque"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Create Site</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+
+        function filterBy(filter) {
+            console.log('Filtering by: ' + filter);
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

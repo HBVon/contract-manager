@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Bailleur</title>
+    <link rel="stylesheet" href="{% static 'css/tester3.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('nom_bailleur')">Bailleur Name</a>
+                <a href="#" onclick="filterBy('prenom_bailleur')">Bailleur First Name</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <div class="content-container">
+                <section class="profile-edit">
+                    <h3>Create Bailleur</h3>
+                    {% comment %}  {% endcomment %}
+                    <form action="{% url 'create_bail' %}" method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="nom_bailleur">Nom:</label>
+                            <input type="text" id="nom_bailleur" name="nom_bailleur" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prenom_bailleur">Prénom:</label>
+                            <input type="text" id="prenom_bailleur" name="prenom_bailleur" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num_mobile">Numéro Mobile:</label>
+                            <input type="text" id="num_mobile" name="num_mobile" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num_fixe">Numéro Fixe:</label>
+                            <input type="text" id="num_fixe" name="num_fixe">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num_fax">Numéro Fax:</label>
+                            <input type="text" id="num_fax" name="num_fax">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="courriel">Courriel:</label>
+                            <input type="email" id="courriel" name="courriel" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="banque">Banque:</label>
+                            <select id="banque" name="banque" required>
+                                <option value="AGB">AGB</option>
+                                <option value="Algérie Poste (CCP)">Algérie Poste (CCP)</option>
+                                <option value="ASBA">ASBA</option>
+                                <option value="B. ABC">B. ABC</option>
+                                <option value="B. EL BARAKA">B. EL BARAKA</option>
+                                <option value="BADR">BADR</option>
+                                <option value="BDL">BDL</option>
+                                <option value="BEA">BEA</option>
+                                <option value="BN. HABITAT">BN. HABITAT</option>
+                                <option value="BNA">BNA</option>
+                                <option value="BNP PARIS BAS AL DJAZAIR">BNP PARIS BAS AL DJAZAIR</option>
+                                <option value="CNEP">CNEP</option>
+                                <option value="CPA">CPA</option>
+                                <option value="FRANSABANK EL DJAZAIR">FRANSABANK EL DJAZAIR</option>
+                                <option value="HBTF">HBTF</option>
+                                <option value="HSBC">HSBC</option>
+                                <option value="NATIXIS">NATIXIS</option>
+                                <option value="SOCIETE GENERALE">SOCIETE GENERALE</option>
+                                <option value="TBA">TBA</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num_compte">Numéro de Compte:</label>
+                            <input type="text" id="num_compte" name="num_compte">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="autre">Autre:</label>
+                            <textarea id="autre" name="autre" rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarque">Remarque:</label>
+                            <textarea id="remarque" name="remarque" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Bailleur</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

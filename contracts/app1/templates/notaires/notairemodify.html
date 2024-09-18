@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notaire Detail</title>
+    <link rel="stylesheet" href="{% static 'css/tester4.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'sitess' %}"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+            <input type="text" placeholder="Search...">
+        </div>
+
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="filterr"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('name')">Name</a>
+                <a href="#" onclick="filterBy('address')">Address</a>
+                <a href="#" onclick="filterBy('codebar')">Codebar</a>
+                <a href="#" onclick="filterBy('age')">Age</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <div class="content-container">
+                <!-- Header Section -->
+                <header class="content-header">
+                    <h1>{{ notaire.nom_prenom_notaire }}</h1>
+                    <div class="action-buttons">
+                        <a href ="{% url 'notaire_detail' notaire.id %}" class="btn-primary">Return</a>
+                        
+                    </div>
+                </header>
+                
+                <!-- Profile Section -->
+                <section class="section profile-section">
+                    <div class="profile-header">
+                        <img src="{% static 'images/profile.png' %}" alt="Photo de Profil" class="profile-picture">
+                        <div class="profile-details">
+                            <h2>{{ notaire.nom_prenom_notaire }}</h2>
+                            <p>Banque: {{ notaire.banque }}</p>
+                            {% if notaire.autre %}
+                                <p>Autre: {{ notaire.autre }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+        
+                    <div class="profile-info">
+                        <h3>Coordonnées</h3>
+                        <p>Email : {{ notaire.courriel }}</p>
+                        <p>Mobile : {{ notaire.num_mobile }}</p>
+                        {% if notaire.num_fixe %}
+                            <p>Fixe : {{ notaire.num_fixe }}</p>
+                        {% endif %}
+                        {% if notaire.num_fax %}
+                            <p>Fax : {{ notaire.num_fax }}</p>
+                        {% endif %}
+                    </div>
+        
+                    <div class="profile-info">
+                        <h3>Adresse</h3>
+                        <p>{{ notaire.adresse }}</p>
+                        <p>{{ notaire.commune.name }} - {{ notaire.commune.daira.name }} - {{ notaire.commune.wilaya.name }}</p>
+                    </div>
+        
+                    <div class="profile-info">
+                        <h3>Détails du Compte Bancaire</h3>
+                        {% if notaire.num_compte %}
+                            <p>Numéro de compte : {{ notaire.num_compte }}</p>
+                        {% else %}
+                            <p>Aucun numéro de compte disponible</p>
+                        {% endif %}
+                    </div>
+        
+                    <div class="profile-info">
+                        <h3>Remarques</h3>
+                        {% if notaire.remarque %}
+                            <p>{{ notaire.remarque }}</p>
+                        {% else %}
+                            <p>Aucune remarque</p>
+                        {% endif %}
+                    </div>
+                </section>
+                <section class="profile-edit">
+                    <h3>Modifier Notaire</h3>
+                    {% comment %}  {% endcomment %}
+                    <form action="{% url 'update_notaire' notaire.id %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="nom_prenom_notaire">Nom et Prénom Notaire :</label>
+                            <input type="text" id="nom_prenom_notaire" name="nom_prenom_notaire" value="{{ notaire.nom_prenom_notaire }}" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="commune">Commune :</label>
+                            <select id="commune" name="commune" required>
+                                {% for commune in communes %}
+                                    <option value="{{ commune.id }}" {% if commune.id == notaire.commune.id %}selected{% endif %}>{{ commune.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="adresse">Adresse :</label>
+                            <input type="text" id="adresse" name="adresse" value="{{ notaire.adresse }}" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="num_mobile">Numéro de Mobile :</label>
+                            <input type="text" id="num_mobile" name="num_mobile" value="{{ notaire.num_mobile }}" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="num_fixe">Numéro de Fixe :</label>
+                            <input type="text" id="num_fixe" name="num_fixe" value="{{ notaire.num_fixe }}">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="num_fax">Numéro de Fax :</label>
+                            <input type="text" id="num_fax" name="num_fax" value="{{ notaire.num_fax }}">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="courriel">Courriel :</label>
+                            <input type="email" id="courriel" name="courriel" value="{{ notaire.courriel }}" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="banque">Banque :</label>
+                            <select id="banque" name="banque" required>
+                                <option value="AGB" {% if notaire.banque == 'AGB' %}selected{% endif %}>AGB</option>
+                                <option value="Algérie Poste (CCP)" {% if notaire.banque == 'Algérie Poste (CCP)' %}selected{% endif %}>Algérie Poste (CCP)</option>
+                                <option value="ASBA" {% if notaire.banque == 'ASBA' %}selected{% endif %}>ASBA</option>
+                                <option value="B. ABC" {% if notaire.banque == 'B. ABC' %}selected{% endif %}>B. ABC</option>
+                                <option value="B. EL BARAKA" {% if notaire.banque == 'B. EL BARAKA' %}selected{% endif %}>B. EL BARAKA</option>
+                                <option value="BADR" {% if notaire.banque == 'BADR' %}selected{% endif %}>BADR</option>
+                                <option value="BDL" {% if notaire.banque == 'BDL' %}selected{% endif %}>BDL</option>
+                                <option value="BEA" {% if notaire.banque == 'BEA' %}selected{% endif %}>BEA</option>
+                                <option value="BN. HABITAT" {% if notaire.banque == 'BN. HABITAT' %}selected{% endif %}>BN. HABITAT</option>
+                                <option value="BNA" {% if notaire.banque == 'BNA' %}selected{% endif %}>BNA</option>
+                                <option value="BNP PARIS BAS AL DJAZAIR" {% if notaire.banque == 'BNP PARIS BAS AL DJAZAIR' %}selected{% endif %}>BNP PARIS BAS AL DJAZAIR</option>
+                                <option value="CNEP" {% if notaire.banque == 'CNEP' %}selected{% endif %}>CNEP</option>
+                                <option value="CPA" {% if notaire.banque == 'CPA' %}selected{% endif %}>CPA</option>
+                                <option value="FRANSABANK EL DJAZAIR" {% if notaire.banque == 'FRANSABANK EL DJAZAIR' %}selected{% endif %}>FRANSABANK EL DJAZAIR</option>
+                                <option value="HBTF" {% if notaire.banque == 'HBTF' %}selected{% endif %}>HBTF</option>
+                                <option value="HSBC" {% if notaire.banque == 'HSBC' %}selected{% endif %}>HSBC</option>
+                                <option value="NATIXIS" {% if notaire.banque == 'NATIXIS' %}selected{% endif %}>NATIXIS</option>
+                                <option value="SOCIETE GENERALE" {% if notaire.banque == 'SOCIETE GENERALE' %}selected{% endif %}>SOCIETE GENERALE</option>
+                                <option value="TBA" {% if notaire.banque == 'TBA' %}selected{% endif %}>TBA</option>
+                            </select>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="num_compte">Numéro de Compte :</label>
+                            <input type="text" id="num_compte" name="num_compte" value="{{ notaire.num_compte }}">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="remarque">Remarque :</label>
+                            <textarea id="remarque" name="remarque">{{ notaire.remarque }}</textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Mettre à Jour le Notaire</button>
+                    </form>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // JavaScript to handle filter dropdown visibility
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        };
+
+        // Function to handle filter option selection
+        function filterBy(filter) {
+            console.log('Filtering by: ' + filter);
+            // Add your filtering logic here
+            // For example, you can update the search input placeholder or perform an actual filter
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

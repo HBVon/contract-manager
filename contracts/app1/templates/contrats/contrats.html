@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar and Sidebar Example</title>
+    <link rel="stylesheet" href="{% static 'css/tester.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'contrats' %}"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            {% comment %}  {% endcomment %}
+            <form method="GET" action="{% url 'contrat_search' %}">
+                <input type="text" name="search_query" placeholder="Search..." value="{{ request.GET.search_query }}">
+                <input type="hidden" id="filterByInput" name="filter_by" value="{{ request.GET.filter_by|default:'ref_dernier_contrat' }}">                
+                <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+            </form>
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="setFilterBy('ref_dernier_contrat')">Contract Reference</a>
+                <a href="#" onclick="setFilterBy('code_site')">Site Code</a>
+                <a href="#" onclick="setFilterBy('wilaya')">Wilaya</a>
+                <a href="#" onclick="setFilterBy('propriete')">Property</a>
+                <a href="#" onclick="setFilterBy('notaire')">Notaire</a>
+                <a href="#" onclick="setFilterBy('etat_contrat_actuel')">Contract Status</a>
+                
+                <!-- New filters for Contract Duration -->
+                <a href="#" onclick="setFilterBy('duree_bail_dernier_contrat__gt')">Contract Duration ></a>
+                <a href="#" onclick="setFilterBy('duree_bail_dernier_contrat__lt')">Contract Duration <</a>
+                
+                <!-- New filters for Annual Lease Amount -->
+                <a href="#" onclick="setFilterBy('bail_location_annuel__gt')">Annual Lease Amount ></a>
+                <a href="#" onclick="setFilterBy('bail_location_annuel__lt')">Annual Lease Amount <</a>
+            
+                <!-- Filter for Renewal Status -->
+                <a href="#" onclick="setFilterBy('etat_renouvellement')">Renewal Status</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <div class="content-container">
+                <header class="content-header">
+                    <h1>Contracts</h1>
+                    <div class="action-buttons">
+                        {% comment %}  {% endcomment %}
+                        <a href="{% url 'contt' %}" class="btn-primary">Create</a>
+
+                    </div>
+                </header>
+                <section class="section">
+                    <h2>Section Title 1</h2>
+                    <div class="cards">
+                        {% for contrat in contrats %}
+                        <div class="card">
+                            <h3> Contrat {{ contrat.ref_dernier_contrat }}</h3>
+                            <p>
+                                 {{ contrat.code_site.code_site }} {{ contrat.propriete }}<br>
+                                <b>Notaire:</b> {{ contrat.notaire.nom_prenom_notaire }} {{ contrat.notaire.prenom }}<br>
+                                <b>Contract Status:</b> {{ contrat.etat_contrat_actuel }}<br>
+                                <b>Remaining Duration:</b> {{ contrat.duree_restante_avant_expiration }}<br>
+                            </p>
+                            <a href="{% url 'contrat_detail' contrat.id %}" class="show-more">Show More</a>
+                        </div>
+                        {% comment %}  {% endcomment %}
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+        function setFilterBy(filter) {
+            document.getElementById('filterByInput').value = filter;
+        }
+
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.show-more').forEach(button => {
+                button.addEventListener('click', function() {
+                    const cardContent = this.previousElementSibling;
+                    cardContent.classList.toggle('expanded');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

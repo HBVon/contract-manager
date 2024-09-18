@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar and Sidebar Example</title>
+    <link rel="stylesheet" href="{% static 'css/tester.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'sitess' %}"><img src="{% static 'images/company8.png' %}" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <form method="GET" action="{% url 'notaire_search' %}">
+                <input type="text" name="search_query" placeholder="Search..." value="{{ request.GET.search_query }}">
+                <input type="hidden" id="filterByInput" name="filter_by" value="{{ request.GET.filter_by|default:'name' }}">                
+                <button type="submit"><img src="{% static 'images/search.png' %}" alt="Search"></button>
+            </form>
+
+        </div>
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="{% static 'images/fil5.png' %}" alt="Filter"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="setFilterBy('name')">Name</a>
+                <a href="#" onclick="setFilterBy('num_fixe')">Num Fixe</a>
+                <a href="#" onclick="setFilterBy('courriel')">Courriel</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+        <main class="main-content">
+            <div class="content-container">
+                <header class="content-header">
+                    <h1>Notaires</h1>
+                    <div class="action-buttons">
+                        <a href="{% url 'gogo' %}" class="btn-primary">Create</a>
+
+                    </div>
+                </header>
+                <section class="section">
+                    <h2>Section Title 1</h2>
+                    <div class="cards">
+                        {% for notaire in notaires %}
+                        <div class="card">
+                            <h3>{{ notaire.nom_prenom_notaire }}</h3>
+                            <p><b>Courriel:</b> {{ notaire.courriel }}<br>
+                            <b>Num Fixe:</b> {{ notaire.num_fixe }}<br>
+                            <b>Remarque:</b> {{ notaire.remarque }}</p>
+                            <a href="{% url 'notaire_detail' notaire.id %}" class="show-more">Show More</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+        function setFilterBy(filter) {
+            document.getElementById('filterByInput').value = filter;
+        }
+
+        // JavaScript to handle filter dropdown visibility
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        };
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+
+        // JavaScript to handle "Show More" functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.show-more').forEach(button => {
+                button.addEventListener('click', function() {
+                    const cardContent = this.previousElementSibling; // Get the paragraph element
+                    cardContent.classList.toggle('expanded'); // Toggle the expanded class
+                    // Remove text change behavior
+                });
+            });
+        });
+    </script>
+</body>
+</html>
