@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar and Sidebar Example</title>
+    <link rel="stylesheet" href="tester2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'sitess' %}"><img src="company8.png" alt="Logo"></a>
+        </div>
+        <div class="search-bar">
+            <button type="submit"><img src="search.png" alt="Search"></button>
+            <input type="text" placeholder="Search...">
+        </div>
+
+        <div class="filter">
+            <button type="button" id="filterButton"><img src="fil5.png" alt="filterr"></button>
+            <div id="filterDropdown" class="filter-dropdown">
+                <a href="#" onclick="filterBy('name')">Name</a>
+                <a href="#" onclick="filterBy('address')">Address</a>
+                <a href="#" onclick="filterBy('codebar')">Codebar</a>
+                <a href="#" onclick="filterBy('age')">Age</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'sitess' %}"><img src="{% static 'images/sites.png' %}" alt="Dashboard Default" class="default-img"><img src="{% static 'images/sites5.png' %}" alt="Dashboard Hover" class="hover-img">Sites</a></li>
+                <li><a href="{% url 'contrats' %}"><img src="{% static 'images/conts.png' %}" alt="Profile Default" class="default-img"><img src="{% static 'images/conts5.png' %}" alt="Profile Hover" class="hover-img">Contracts</a></li>
+                <li><a href="{% url 'notaires' %}"><img src="{% static 'images/not.png' %}" alt="Messages Default" class="default-img"><img src="{% static 'images/not5.png' %}" alt="Messages Hover" class="hover-img">Notaires</a></li>
+                <li><a href="{% url 'calculate_statistics' %}"><img src="{% static 'images/sett2.png' %}" alt="Settings Default" class="default-img"><img src="{% static 'images/sett5.png' %}" alt="Settings Hover" class="hover-img">Statistics</a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <div class="content-container">
+                <!-- Header Section -->
+                <header class="content-header">
+                    <h1>Profile Information</h1>
+                    <div class="action-buttons">
+                        <button class="btn-primary">Edit Profile</button>
+                        <button class="btn-secondary">Settings</button>
+                    </div>
+                </header>
+                
+                <!-- Profile Section -->
+                <section class="section profile-section">
+                    <div class="profile-header">
+                        <img src="profile.jpg" alt="Profile Picture" class="profile-picture">
+                        <div class="profile-details">
+                            <h2>John Doe</h2>
+                            <p>Software Engineer</p>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Contact Information</h3>
+                        <p>Email: john.doe@example.com</p>
+                        <p>Phone: +123 456 7890</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Address</h3>
+                        <p>123 Main St, Apt 4B</p>
+                        <p>City, State, ZIP</p>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Bio</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet aliquet eros. Fusce auctor lectus nec dui aliquam, in dignissim orci bibendum.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // JavaScript to handle filter dropdown visibility
+        document.getElementById('filterButton').onclick = function() {
+            var dropdown = document.getElementById('filterDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        };
+
+        // Function to handle filter option selection
+        function filterBy(filter) {
+            console.log('Filtering by: ' + filter);
+            // Add your filtering logic here
+            // For example, you can update the search input placeholder or perform an actual filter
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('#filterButton') && !event.target.closest('.filter')) {
+                var dropdowns = document.getElementsByClassName('filter-dropdown');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

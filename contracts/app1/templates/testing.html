@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Location</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Select Location</h1>
+    <form method="post" id="locationForm">
+        {% csrf_token %}
+        {{ form.commune }}
+        <input type="text" id="id_daira" name="daira" readonly>
+        <input type="text" id="id_wilaya" name="wilaya" readonly>
+    </form>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#id_commune').change(function(){
+                var communeId = $(this).val();
+                if (communeId) {
+                    $.ajax({
+                        url: '/get_location_details/',  // You need to create this URL in your Django views
+                        data: {
+                            'commune_id': communeId
+                        },
+                        success: function(data) {
+                            $('#id_daira').val(data.daira);
+                            $('#id_wilaya').val(data.wilaya);
+                        }
+                    });
+                } else {
+                    $('#id_daira').val('');
+                    $('#id_wilaya').val('');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

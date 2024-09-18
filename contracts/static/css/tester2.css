@@ -1,0 +1,386 @@
+body {
+    margin: 0;
+    background-color: #F5F5F5; 
+    font-family: Arial, sans-serif, Poppins;
+    overflow-x: hidden; /* Ensure the body does not cause horizontal scrolling */
+}
+
+.navbar {
+    width: 100%;
+    height: 102px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border: 1px solid #e8e8e8;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: top 0.3s;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+.filter {
+    display: flex; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    margin: 80px 55px; /* Add some margin for spacing */
+    position: relative; /* Necessary for positioning the dropdown */
+}
+
+.filter button {
+    padding: 10px 20px; /* Add padding to the button */
+    border: 1px solid white; /* Border style */
+    border-radius: 20px; /* Rounded corners */
+    background-color: white; /* Background color */
+    cursor: pointer; /* Cursor style */
+    display: flex; /* Use flexbox for button content */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+
+.filter button img {
+    width: 53px; /* Adjust the size of the image */
+    height: 38px; /* Adjust the size of the image */
+}
+
+.filter-dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 60px; /* Position the dropdown below the button */
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-dropdown a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.filter-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.nav-icons img {
+    width: 24px;
+    height: 24px;
+}
+
+.search-bar {
+    flex-grow: 1;
+    max-width: 989px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    border: 1px solid #a7a7a7;
+    background-color: #ffffff;
+    margin-left: 45px;
+    margin-right: 0px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.search-bar input::placeholder {
+    color: #aaa;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 10px;
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.search-bar button img {
+    width: 19px;
+    height: 19px;
+}
+
+.container {
+    display: flex;
+    margin-top: 102px; /* Add margin to account for the fixed navbar */
+}
+
+.sidebar {
+    width: 273px;
+    height: 922px;
+    background-color: white;
+    color: black;
+    padding: 20px;
+    position: fixed;
+    top: 102px;
+    left: 0;
+    overflow-y: auto;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box; /* Include padding in the height */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+    position: relative;
+}
+
+/* Sidebar link styling */
+.sidebar ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex; /* Use flex to align images and text */
+    align-items: center; /* Center items vertically */
+    padding: 10px 20px; /* Adjust padding to leave space for images and text */
+    border-radius: 5px;
+    position: relative;
+    transition: color 0.3s, font-weight 0.3s;
+    gap: 15px; /* Space between image and text */
+}
+
+/* Style for images inside sidebar links */
+.sidebar ul li a img {
+    width: 24px; /* Adjust the size of the image */
+    height: 24px; /* Adjust the size of the image */
+    transition: opacity 0.3s;
+}
+
+/* Position default image */
+.sidebar ul li a .default-img {
+    opacity: 1; /* Show default image */
+}
+
+/* Position hover image */
+.sidebar ul li a .hover-img {
+    position: absolute;
+    opacity: 0; /* Hide hover image */
+}
+
+/* Show hover image and hide default image on hover */
+.sidebar ul li a:hover .hover-img {
+    opacity: 1;
+}
+
+.sidebar ul li a:hover .default-img {
+    opacity: 0;
+}
+
+/* Hover effect */
+.sidebar ul li a:hover {
+    color: #30af3f;
+    font-weight: bold;
+    background-color: #EFEEEB;
+}
+
+/* Hover rectangle */
+.sidebar ul li a::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-color: #30af3f;
+    border-radius: 0 10px 10px 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.sidebar ul li a:hover::before {
+    opacity: 1;
+}
+
+.main-content {
+    margin-left: 293px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* General Content Container Styling */
+.content-container {
+    max-width: 1000px; /* Maximum width of the container */
+    width: calc(100% - 60px); /* Full width minus the left and right margins */
+    margin-top: 17px; /* Space from the navbar */
+    margin-left: 30px; /* Space from the sidebar */
+    margin-right: 30px; /* Space from the sidebar */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in the width and height */
+    overflow: auto; /* Ensure that it can scroll if content overflows */
+    flex-grow: 1; /* Allow the container to grow with the content */
+}
+
+/* Header Section */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.content-header h1 {
+    font-size: 28px;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons .btn-primary,
+.action-buttons .btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-buttons .btn-primary {
+    background-color: #30af3f;
+    color: #fff;
+}
+
+.action-buttons .btn-secondary {
+    background-color: #ccc;
+    color: #333;
+}
+
+/* Profile Section */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 20px;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #30af3f;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.profile-details h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-details p {
+    margin: 0;
+    font-size: 18px;
+    color: #666;
+}
+
+.profile-info {
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.profile-info h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    font-size: 16px;
+    color: #666;
+}
+       /* Modal styles */
+.modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-buttons {
+        margin-top: 20px;
+    }
+
+    .modal-buttons button {
+        margin-right: 10px;
+    }
