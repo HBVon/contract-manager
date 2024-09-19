@@ -13,7 +13,7 @@ __pycache__/
 # Django static files
 
 
-db.sqlite3
+
 
 # Media files
 media/
